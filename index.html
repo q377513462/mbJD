@@ -1,0 +1,897 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="css/normalize.css" />
+    <title>Document</title>
+    <style>
+        *{
+            padding: 0;
+            margin:0 auto;
+        }
+        a{
+            text-decoration: none;
+        }
+        body{
+            width: 100%;        /* 给整个网页设置宽度 */
+            min-width: 320px;       /* 设置最大，最小屏幕宽度 */
+            max-width: 1080px;
+            min-height: 2000px;
+            margin:0 auto;
+            /*设置一下全局样式*/
+            font-size:14px;
+            background: #f6f6f6;
+            color:#666;
+            line-height: 1.5;
+            /*尽可能的一样，因此字体复制过来*/
+            font-family: -apple-system,Helvetica,sans-serif;
+        }
+        ul{
+            list-style: none;
+        }
+
+        .jdApp{
+            height: 45px;
+        }
+        .jdApp ul li{
+            height: 45px;
+            background: #333;
+            float: left;
+            list-style:none;
+            text-align: center;     /*垂直居中*/
+            line-height: 45px;
+        }
+        .jdApp ul li:nth-of-type(1){
+            width:8%;
+        }
+        .jdApp ul li:nth-of-type(1) img{
+            width:10px;
+        }
+        .jdApp ul li:nth-of-type(2){
+            width:10%;
+        }
+        .jdApp ul li:nth-of-type(2) img{
+            /* 图片默认和文字的基线对齐 */
+            vertical-align: middle;
+            width:30px;
+        }
+        .jdApp ul li:nth-of-type(3){
+            width:57%;
+            color:white;
+        }
+        .jdApp ul li:nth-of-type(4){
+            width:25%;
+            background: red;
+            color:white;
+        }
+
+        /*搜索*/
+        .search-wrap{
+            height: 44px;
+            position: fixed;
+            overflow:hidden;
+            /* 固定定位必须要设置宽度 */
+            min-width: 320px;
+            max-width: 1080px;
+            width: 100%;
+            z-index: 99;        /*层级级别*/
+        }
+        .search-btn{
+            position: absolute;
+            top:0;
+            left:0;
+            width: 40px;
+            height: 44px;
+        }
+        /*  ::before  在标签里面添加一个内容  */
+        .search-btn::before{
+            content: "";
+            display: block;
+            width: 20px;
+            height: 18px;
+            background: url("images/s-btn.png") no-repeat;
+            background-size: 20px 18px;
+            margin: 14px 0 0 15px;
+        }
+
+        .search-login{
+            position: absolute;
+            top:0;
+            right:0;
+            width: 40px;
+            height: 44px;
+            color: #fff;
+            line-height: 44px;
+        }
+        .search{
+            height: 30px;
+            margin: 0 50px;
+            background: #fff;
+            border-radius: 15px;
+            margin-top: 7px;        /*外边框合并，解决：父标签overflow:hidden*/
+            position: relative;
+        }
+        .search .jd-icon{
+            width: 20px;
+            height: 15px;
+            position: absolute;
+            top:8px;
+            left:13px;
+            background: url("images/jd.png") no-repeat;
+            background-size: 20px 15px;
+        }
+        .search .jd-icon::after{
+            content: "";
+            position: absolute;
+            right:-8px;
+            top:0;
+            display: block;
+            width: 1px;
+            height: 15px;
+            background: #ccc;
+        }
+
+        .search .sou{
+            width: 18px;
+            height: 15px;
+            position: absolute;
+            top:8px;
+            left: 50px;
+            /*这里需要用到二倍精灵图的做法：先将精灵图改为原先的一半，再测量位移大小，然后背景大小也改为一般*/
+            background: url("images/jd-sprites.png") no-repeat -81px 0;
+            background-size: 200px auto;
+        }
+        .search .content{
+            position: absolute;
+            left: 75px;
+            top:6px;
+            font-size: 12px;
+            border: none;
+            padding: 2px 0 0 2px;
+        }
+
+        /*主题内容*/
+        .slider-bg{
+            background-image: linear-gradient(0deg,#f1503b,#c82519 50%);
+            position: absolute;
+            width: 100%;
+            height: 145px;
+            top: 0;
+            z-index: -1;
+        }
+
+        .slider{
+            width:95%;
+            height: 140px;
+            border-radius: 10px;
+            margin: 0 auto;
+            margin-top: 50px;
+        }
+        .slider img{
+            width: 100%;
+            height: 100%;
+            border-radius: 10px;
+        }
+
+        /*导航栏*/
+        nav{
+            width: 100%;
+            min-height: 160px;
+        }
+        nav a{
+            float: left;
+            width: 20%;
+            text-align: center;
+            color:#333;
+            font-size:12px;
+            text-decoration: none;
+        }
+        nav a img{
+            width: 40px;
+            margin: 10px 0 5px 0;
+        }
+
+        /*活动栏*/
+        .floor{
+            width: 100%;
+        }
+        .floor div{
+            width: 33%;
+            float: left;
+            height: 100px;
+        }
+        .floor img{
+            width: 100%;
+            height: 100%;
+        }
+        .floor1{
+            width: 100%;
+            height: 100%;
+        }
+
+        /*秒杀*/
+        .seckill{
+            width: 95%;
+            border-radius: 10px;
+            min-height: 175px;
+            position: relative;
+            overflow: hidden;
+            background: #fff;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+        .seckill-top{
+            height: 35px;
+            line-height: 35px;
+            vertical-align: middle;
+            background: url("images/seckill.png");
+            background-size: contain;
+        }
+        .seckill-btm{
+            height: 120px;
+        }
+
+        /*秒杀上部分*/
+        .seckill .seckill-top-left{
+            float: left;
+            display: inline-block;
+        }
+        .seckill .seckill-logo{
+            float: left;
+            width: 70px;
+            height: 27px;
+            margin: 8px 8px 0 8px;
+            background: url("images/jdseckill.png") no-repeat;
+            background-size: contain;
+        }
+        .seckill strong{
+            font-size:12px;
+            color:red;
+        }
+        .seckill .seckill-time{
+            display: inline-block;
+            vertical-align: middle;
+            margin-left: 2px;
+            border-radius: 15px;
+            border: 1px solid red;
+            padding: 0 3px;
+        }
+        .seckill .sec-time{
+            width: 16px;
+            height: 18px;
+            line-height: 18px;
+            float: left;
+            text-align: center;
+            box-sizing: border-box;
+        }
+        .seckill .seckill-time-separator{
+            float: left;
+            width: 8px;
+            height: 18px;
+            line-height: 18px;
+        }
+        
+        .seckill .seckill-top-right{
+            float: right;
+            display: inline-block;
+            color:red;
+            font-size:10px;
+            text-align: center;
+            padding-right: 10px;
+        }
+        .seckill .seckill-more{
+            width: 11px;
+            height: 11px;
+            display: inline-block;
+            background: url("images/more.png") no-repeat;
+            background-size: contain;
+            margin-left: 4px;
+        }
+        /*秒杀下部分*/
+        .seckill .seckill-btm{
+            overflow-x: scroll;
+            border-bottom: none;
+            width:100%;
+        }
+
+        .seckill-btm ul{
+            width: 810px;
+            position: relative;     /* 为后续滑动做铺垫 */
+            background:#fff;
+        }
+        .seckill .seckill-item{
+            width: 76px;
+            float: left;
+        }
+        .seckill-item-image{
+            width: 100%;
+            padding: 0 5px;
+            box-sizing: border-box;
+        }
+        .seckill-item-image img{
+            width: 100%;
+            height: auto;
+            overflow: hidden;
+        }
+        .seckill-item-price{
+            margin: 0 auto;
+            text-align: center;
+        }
+        .seckill-item-price .nowprice{
+            color:red;
+            font-size: 16px;
+            height: 16px;
+            line-height: 16px;
+            text-align: center;
+        }
+        .seckill-item-price .oldprice{
+            margin-top: 2px;
+            color:#999;
+            font-size: 12px;
+            height: 12px;
+            line-height: 12px;
+            text-align: center;
+            text-decoration: line-through;
+        }
+
+        /*每日逛*/
+        .everyDayshop{
+            width: 100%;
+            height: 320px;
+        }
+        .everyDayshop .eds-logo img{
+            width: 100%;
+            height: 40px;
+        }
+        .everyDayshop .eds-container{
+            width:95%;
+            height: 280px;
+        }
+        .eds-container > div{
+            width: 100%;
+            height:140px;
+        }
+        .eds-container-top .eds-top-div{
+            float: left;
+            width: 25%;
+            height: 140px;
+            background: #fff;
+        }
+        .eds-top-div div{
+            width: 100%;
+            text-align: center;
+        }
+        .eds-top-div strong{
+            font-size: 18px;
+            background: linear-gradient(90deg, #FF2A2A,#F139D2);
+            -webkit-background-clip: text;
+            color: transparent;         /*透明*/
+        }
+        .eds-top-div div img{
+            width: 80%;
+            height: 80%;
+        }
+
+        /*为你推荐*/
+        .recommend{
+            width: 95%;
+            height: 2000px;
+            margin-top: 20px;
+        }
+        .recommend-logo img{
+            width: 100%;
+            height: 40px;
+        }
+        .recommend .recommend-container{
+            width: 100%;
+            height: 1960px;
+        }
+        .recommend-container ul{
+            list-style: none;       /*去掉前面的小点点*/
+        }
+        .recommend-container ul li{
+            float: left;
+            width: 48%;
+            box-sizing: border-box;
+            position: relative;
+            margin: 3px;
+            height:290px;
+            background: #fff;
+        }
+        .recommend .rc-img{
+            width: 100%;
+            height: 190px;
+        }
+        .recommend .rc-img img{
+            width: 100%;
+            height: 100%;
+        }
+        .recommend .rc-title{
+            overflow: hidden;
+            text-overflow: ellipsis;
+            height: 31px;
+            line-height: 18px;
+            font-size: 14px;
+            display: -webkit-box;       /*必须结合的属性 ，将对象作为弹性伸缩盒子模型显示*/
+            -webkit-line-clamp: 2;      /*控制行数，不在规范内，需要和上下结合使用才行*/
+            -webkit-box-orient: vertical;
+            padding: 3px;
+            margin-bottom: 8px;
+        }
+        .recommend .rc-price{
+            position: relative;
+            height: 26px;
+        }
+        .recommend .rc-price span:nth-child(1){
+            color:red;
+            position: absolute;
+            top: 0;
+            left: 2px;
+            font-size: 16px;
+        }
+        .recommend .rc-price span:nth-child(2){
+            position: absolute;
+            right: 4px;
+            border: 1px solid #ccc;
+            padding: 2px;
+        }
+
+        /*底部菜单*/
+        .button-menu{
+            margin: 0;
+            padding: 0;
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            z-index: 31;
+            box-sizing: border-box;
+            width: 100%;
+            background: #fff;
+        }
+        .button-menu a{
+            width: 20%;
+            height: 55px;
+            float: left;
+            text-align: center;
+        }
+        .button-menu a img{
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+    <!--顶部-->
+    <header class="jdApp">
+        <ul>
+            <li>
+                <img src="images/close.png" />
+            </li>
+            <li>
+                <img src="images/logo.png" />
+            </li>
+            <li>打开京东App，购物更轻松</li>
+            <li>立即打开</li>
+        </ul>
+    </header>
+    <!--搜索-->
+    <div class="search-wrap">
+        <div class="search-btn"></div>
+        <div class="search">
+            <div class="jd-icon"></div>
+            <div class="sou"></div>
+            <input class="content" placeholder="苹果笔记本" />
+        </div>
+        <div class="search-login">登录</div>
+    </div>
+
+    <!--主体内容-->
+    <div class="main">
+        <!--滑动图-->
+        <div class="slider-bg"></div>
+        <div class="slider">
+            <img src="images/banner.jpg" alt="" />
+        </div>
+        <!--导航栏-->
+        <nav>
+            <a href="">
+                <img src="images/nav1.webp" alt=""/>
+                <p>京东超市</p>
+            </a>
+            <a href="">
+                <img src="images/nav1.webp" alt=""/>
+                <p>京东超市</p>
+            </a>
+            <a href="">
+                <img src="images/nav1.webp" alt=""/>
+                <p>京东超市</p>
+            </a>
+            <a href="">
+                <img src="images/nav1.webp" alt=""/>
+                <p>京东超市</p>
+            </a>
+            <a href="">
+                <img src="images/nav1.webp" alt=""/>
+                <p>京东超市</p>
+            </a>
+            <a href="">
+                <img src="images/nav1.webp" alt=""/>
+                <p>京东超市</p>
+            </a>
+            <a href="">
+                <img src="images/nav1.webp" alt=""/>
+                <p>京东超市</p>
+            </a>
+            <a href="">
+                <img src="images/nav1.webp" alt=""/>
+                <p>京东超市</p>
+            </a>
+            <a href="">
+                <img src="images/nav1.webp" alt=""/>
+                <p>京东超市</p>
+            </a>
+            <a href="">
+                <img src="images/nav1.webp" alt=""/>
+                <p>京东超市</p>
+            </a>
+        </nav>
+        <!--活动栏-->
+        <div class="floor">
+            <div class="floor1">
+                <a>
+                    <img src="images/floor1.dpg" />
+                </a>
+            </div>
+            <div class="floor2">
+                <a>
+                    <img src="images/floor2.dpg" />
+                </a>
+            </div>
+            <div class="floor3">
+                <a>
+                    <img src="images/floor3.dpg" />
+                </a>
+            </div>
+        </div>
+        <!--秒杀-->
+        <div class="seckill">
+            <div class="seckill-top">
+                <a class="seckill-top-left">
+                    <div class="seckill-logo"></div>
+                    <strong>20点场</strong>
+                    <div class="seckill-time">
+                        <div class="sec-time">01</div>
+                        <span class="seckill-time-separator">:</span>
+                        <div class="sec-time">23</div>
+                        <span class="seckill-time-separator">:</span>
+                        <div class="sec-time">45</div>
+                    </div>
+                </a>
+                <a class="seckill-top-right">更多秒杀<i class="seckill-more"></i></a>
+            </div>
+            <div class="seckill-btm">
+                <ul>
+                    <li class="seckill-item">
+                        <div class="seckill-item-image">
+                            <img src="images/items.dpg" />
+                        </div>
+                        <div class="seckill-item-price">
+                            <p class="nowprice"><em>￥</em>98</p>
+                            <p class="oldprice"><em>￥</em>998</p>
+                        </div>
+                    </li>
+                    <li class="seckill-item">
+                        <div class="seckill-item-image">
+                            <img src="images/items.dpg" />
+                        </div>
+                        <div class="seckill-item-price">
+                            <p class="nowprice"><em>￥</em>98</p>
+                            <p class="oldprice"><em>￥</em>998</p>
+                        </div>
+                    </li>
+                    <li class="seckill-item">
+                        <div class="seckill-item-image">
+                            <img src="images/items.dpg" />
+                        </div>
+                        <div class="seckill-item-price">
+                            <p class="nowprice"><em>￥</em>98</p>
+                            <p class="oldprice"><em>￥</em>998</p>
+                        </div>
+                    </li>
+                    <li class="seckill-item">
+                        <div class="seckill-item-image">
+                            <img src="images/items.dpg" />
+                        </div>
+                        <div class="seckill-item-price">
+                            <p class="nowprice"><em>￥</em>98</p>
+                            <p class="oldprice"><em>￥</em>998</p>
+                        </div>
+                    </li>
+                    <li class="seckill-item">
+                        <div class="seckill-item-image">
+                            <img src="images/items.dpg" />
+                        </div>
+                        <div class="seckill-item-price">
+                            <p class="nowprice"><em>￥</em>98</p>
+                            <p class="oldprice"><em>￥</em>998</p>
+                        </div>
+                    </li>
+                    <li class="seckill-item">
+                        <div class="seckill-item-image">
+                            <img src="images/items.dpg" />
+                        </div>
+                        <div class="seckill-item-price">
+                            <p class="nowprice"><em>￥</em>98</p>
+                            <p class="oldprice"><em>￥</em>998</p>
+                        </div>
+                    </li>
+                    <li class="seckill-item">
+                        <div class="seckill-item-image">
+                            <img src="images/items.dpg" />
+                        </div>
+                        <div class="seckill-item-price">
+                            <p class="nowprice"><em>￥</em>98</p>
+                            <p class="oldprice"><em>￥</em>998</p>
+                        </div>
+                    </li>
+                    <li class="seckill-item">
+                        <div class="seckill-item-image">
+                            <img src="images/items.dpg" />
+                        </div>
+                        <div class="seckill-item-price">
+                            <p class="nowprice"><em>￥</em>98</p>
+                            <p class="oldprice"><em>￥</em>998</p>
+                        </div>
+                    </li>
+                    <li class="seckill-item">
+                        <div class="seckill-item-image">
+                            <img src="images/items.dpg" />
+                        </div>
+                        <div class="seckill-item-price">
+                            <p class="nowprice"><em>￥</em>98</p>
+                            <p class="oldprice"><em>￥</em>998</p>
+                        </div>
+                    </li>
+                    <li class="seckill-item">
+                        <div class="seckill-item-image">
+                            <img src="images/items.dpg" />
+                        </div>
+                        <div class="seckill-item-price">
+                            <p class="nowprice"><em>￥</em>98</p>
+                            <p class="oldprice"><em>￥</em>998</p>
+                        </div>
+                    </li>
+                </ul>       
+            </div>
+        </div>
+
+        <!--每日逛-->
+        <div class="everyDayshop">
+            <div class="eds-logo">
+                <img src="./images/everyDayShop.dpg" />
+            </div>
+            <div class="eds-container">
+                <div class="eds-container-top">
+                    <div class="eds-top-div">
+                        <div>
+                            <strong>免息星球</strong>
+                            <p>白条免息购</p>
+                        </div>
+                        <div>
+                            <img src="images/eds_1.dpg" />
+                        </div>
+                    </div>
+                    <div class="eds-top-div">
+                        <div>
+                            <strong>免息星球</strong>
+                            <p>白条免息购</p>
+                        </div>
+                        <div>
+                            <img src="images/eds_1.dpg" />
+                        </div>
+                    </div>
+                    <div class="eds-top-div">
+                        <div>
+                            <strong>免息星球</strong>
+                            <p>白条免息购</p>
+                        </div>
+                        <div>
+                            <img src="images/eds_1.dpg" />
+                        </div>
+                    </div>
+                    <div class="eds-top-div">
+                        <div>
+                            <strong>免息星球</strong>
+                            <p>白条免息购</p>
+                        </div>
+                        <div>
+                            <img src="images/eds_1.dpg" />
+                        </div>
+                    </div>
+                </div>
+                <div class="eds-container-top">
+                    <div class="eds-top-div">
+                        <div>
+                            <strong>免息星球</strong>
+                            <p>白条免息购</p>
+                        </div>
+                        <div>
+                            <img src="images/eds_1.dpg" />
+                        </div>
+                    </div>
+                    <div class="eds-top-div">
+                        <div>
+                            <strong>免息星球</strong>
+                            <p>白条免息购</p>
+                        </div>
+                        <div>
+                            <img src="images/eds_1.dpg" />
+                        </div>
+                    </div>
+                    <div class="eds-top-div">
+                        <div>
+                            <strong>免息星球</strong>
+                            <p>白条免息购</p>
+                        </div>
+                        <div>
+                            <img src="images/eds_1.dpg" />
+                        </div>
+                    </div>
+                    <div class="eds-top-div">
+                        <div>
+                            <strong>免息星球</strong>
+                            <p>白条免息购</p>
+                        </div>
+                        <div>
+                            <img src="images/eds_1.dpg" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--为你推荐-->
+        <div class="recommend">
+            <div class="recommend-logo">
+                <img src="./images/88174b36f85283b6.png" />
+            </div>
+            <div class="recommend-container">
+                <ul>
+                    <li>
+                        <div>
+                            <div class="rc-img">
+                                <img src="images/41c9fbe1ae003a5a.jpg!q70.dpg.webp" />
+                            </div>
+                            <span class="rc-title">实木 乌檀木整木实木家用防裂防霉厨房案板切菜水果蔬菜板砧 1-2人36*24*2±0.3CM</span>
+                            <p class="rc-price">
+                                <span>￥&nbsp;199</span>
+                                <span>看相似</span>
+                            </p>
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <div class="rc-img">
+                                <img src="images/41c9fbe1ae003a5a.jpg!q70.dpg.webp" />
+                            </div>
+                            <span class="rc-title">实木 乌檀木整木实木家用防裂防霉厨房案板切菜水果蔬菜板砧 1-2人36*24*2±0.3CM</span>
+                            <p class="rc-price">
+                                <span>￥&nbsp;199</span>
+                                <span>看相似</span>
+                            </p>
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <div class="rc-img">
+                                <img src="images/41c9fbe1ae003a5a.jpg!q70.dpg.webp" />
+                            </div>
+                            <span class="rc-title">实木 乌檀木整木实木家用防裂防霉厨房案板切菜水果蔬菜板砧 1-2人36*24*2±0.3CM</span>
+                            <p class="rc-price">
+                                <span>￥&nbsp;199</span>
+                                <span>看相似</span>
+                            </p>
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <div class="rc-img">
+                                <img src="images/41c9fbe1ae003a5a.jpg!q70.dpg.webp" />
+                            </div>
+                            <span class="rc-title">实木 乌檀木整木实木家用防裂防霉厨房案板切菜水果蔬菜板砧 1-2人36*24*2±0.3CM</span>
+                            <p class="rc-price">
+                                <span>￥&nbsp;199</span>
+                                <span>看相似</span>
+                            </p>
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <div class="rc-img">
+                                <img src="images/41c9fbe1ae003a5a.jpg!q70.dpg.webp" />
+                            </div>
+                            <span class="rc-title">实木 乌檀木整木实木家用防裂防霉厨房案板切菜水果蔬菜板砧 1-2人36*24*2±0.3CM</span>
+                            <p class="rc-price">
+                                <span>￥&nbsp;199</span>
+                                <span>看相似</span>
+                            </p>
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <div class="rc-img">
+                                <img src="images/41c9fbe1ae003a5a.jpg!q70.dpg.webp" />
+                            </div>
+                            <span class="rc-title">实木 乌檀木整木实木家用防裂防霉厨房案板切菜水果蔬菜板砧 1-2人36*24*2±0.3CM</span>
+                            <p class="rc-price">
+                                <span>￥&nbsp;199</span>
+                                <span>看相似</span>
+                            </p>
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <div class="rc-img">
+                                <img src="images/41c9fbe1ae003a5a.jpg!q70.dpg.webp" />
+                            </div>
+                            <span class="rc-title">实木 乌檀木整木实木家用防裂防霉厨房案板切菜水果蔬菜板砧 1-2人36*24*2±0.3CM</span>
+                            <p class="rc-price">
+                                <span>￥&nbsp;199</span>
+                                <span>看相似</span>
+                            </p>
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <div class="rc-img">
+                                <img src="images/41c9fbe1ae003a5a.jpg!q70.dpg.webp" />
+                            </div>
+                            <span class="rc-title">实木 乌檀木整木实木家用防裂防霉厨房案板切菜水果蔬菜板砧 1-2人36*24*2±0.3CM</span>
+                            <p class="rc-price">
+                                <span>￥&nbsp;199</span>
+                                <span>看相似</span>
+                            </p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!--底部菜单-->
+        <div class="button-menu">
+            <a href="">
+                <img src="images/81328b0609c60a3c.png"/>
+            </a>
+            <a href="">
+                <img src="images/4af32f42575509d8.png"/>
+            </a>
+            <a href="">
+                <img src="images/2467c20113c50451.png"/>
+            </a>
+            <a href="">
+                <img src="images/f2fe0a88bf344736.png"/>
+            </a>
+            <a href="">
+                <img src="images/876c40f17d91ce44.png"/>
+            </a>
+        </div>
+    </div>
+
+
+    <script>
+        let flag = true;
+
+        document.onscroll = () => {
+            if( flag ){
+                flag = false;
+                document.querySelector(".jdApp").style.display = "none";
+                document.querySelector(".search-wrap").style.top = "0px";
+                document.querySelector(".search-wrap").style.backgroundColor = "red";
+            }
+        }
+    </script>
+</body>
+</html>
